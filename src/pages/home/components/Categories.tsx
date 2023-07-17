@@ -10,20 +10,19 @@ const Categories = () => {
 
   const fetchCategories = async () => {
     try {
-      const { data } = await axios.get(`${env.apiUrl}/api/category`)
+      const { data } = await axios.get(`${env.apiUrl}api/category`)
       setCategories(data)
-    } catch (error) {
-      console.log({ error })
-    }
+    } catch (error) {}
   }
   console.log(categories)
+
   useEffect(() => {
     fetchCategories()
   }, [])
 
   return (
     <div className="categories-container">
-      <div className="categories-content"></div>
+      <div className="categories-content">ola</div>
     </div>
   )
 }
