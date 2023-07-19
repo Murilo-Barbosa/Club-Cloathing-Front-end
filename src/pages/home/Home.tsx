@@ -1,12 +1,12 @@
 import Header from '../../Components/Header/Header'
-import Categories from './components/Categories'
+import Categories from './components/categories/Categories'
 
 const Home = () => {
   return (
-    <div>
+    <>
       <Header />
       <Categories />
-    </div>
+    </>
   )
 }
 

@@ -40,6 +40,7 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "@types/styled-components": "^5.1.26",
     "prettier-config-standard": "^5.0.0"
   },
   "resolutions": {
