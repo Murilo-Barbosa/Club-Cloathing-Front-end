@@ -8,10 +8,11 @@ interface CustomButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 const CustomButtom: FunctionComponent<CustomButtonProps> = ({
   children,
-  startIcon
+  startIcon,
+  ...rest
 }) => {
   return (
-    <S.CustomButtonContainer>
+    <S.CustomButtonContainer {...rest}>
       {startIcon && <S.IconContainer>{startIcon}</S.IconContainer>}
       {children}
     </S.CustomButtonContainer>

@@ -18,7 +18,6 @@ const Categories = () => {
       setCategories(data)
     } catch (error) {}
   }
-  console.log(categories)
 
   useEffect(() => {
     fetchCategories()
