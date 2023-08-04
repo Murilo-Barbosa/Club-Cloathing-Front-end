@@ -12,9 +12,11 @@ import CategoryItem from '../categorieItem/CategorieItem'
 
 const Categories = () => {
   const [categories, setCategories] = useState<Category[]>([])
-  const categoriesFromFirestore: Category[] = []
+
   const fetchCategories = async () => {
     try {
+      const categoriesFromFirestore: Category[] = []
+
       const querySnapshot = await getDocs(
         collection(db, 'categories').withConverter(categoryConverter)
       )
@@ -22,7 +24,9 @@ const Categories = () => {
         categoriesFromFirestore.push(doc.data())
       })
       setCategories(categoriesFromFirestore)
-    } catch (error) {}
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   useEffect(() => {

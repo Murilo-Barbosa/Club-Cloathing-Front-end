@@ -1,5 +1,8 @@
+import { createUserWithEmailAndPassword } from 'firebase/auth'
+import { addDoc, collection } from 'firebase/firestore'
 import { useForm } from 'react-hook-form'
 import validator from 'validator'
+import { auth, db } from '../../config/firebase.config'
 
 //components
 import { FiLogIn } from 'react-icons/fi'
@@ -16,19 +19,40 @@ import {
   SignUpInputContainer
 } from './styles'
 
+interface SignUpForm {
+  firstName: string
+  lastName: string
+  email: string
+  password: string
+  passwordConfirm: string
+}
+
 const SignUp = () => {
   const {
     register,
     formState: { errors },
     handleSubmit,
     watch
-  } = useForm()
-
-  const handleSubmitPress = (data: any) => {
-    console.log({ data })
-  }
+  } = useForm<SignUpForm>()
 
   const passwordValue = watch('password')
+
+  const handleSubmitPress = async (data: SignUpForm) => {
+    try {
+      const userCredentials = await createUserWithEmailAndPassword(
+        auth,
+        data.email,
+        data.password
+      )
+
+      await addDoc(collection(db, 'users'), {
+        id: userCredentials.user.uid,
+        email: userCredentials.user.email,
+        firstName: data.firstName,
+        lastName: data.lastName
+      })
+    } catch (error) {}
+  }
 
   return (
     <>
@@ -42,12 +66,12 @@ const SignUp = () => {
             <p>Nome</p>
             <CustomInput
               placeholder="Digite seu nome"
-              hasError={!!errors?.name}
-              {...register('name', {
+              hasError={!!errors?.firstName}
+              {...register('firstName', {
                 required: true
               })}
             />
-            {errors?.name?.type === 'required' && (
+            {errors?.firstName?.type === 'required' && (
               <ErrorMessage>O nome é obrigatório!</ErrorMessage>
             )}
           </SignUpInputContainer>
@@ -56,12 +80,12 @@ const SignUp = () => {
             <p>Sobrenome</p>
             <CustomInput
               placeholder="Digite seu sobrenome"
-              hasError={!!errors?.surname}
-              {...register('surname', {
+              hasError={!!errors?.lastName}
+              {...register('lastName', {
                 required: true
               })}
             />
-            {errors?.surname?.type === 'required' && (
+            {errors?.lastName?.type === 'required' && (
               <ErrorMessage>O sobrenome é obrigatório!</ErrorMessage>
             )}
           </SignUpInputContainer>
