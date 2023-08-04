@@ -1,4 +1,8 @@
-import { createUserWithEmailAndPassword } from 'firebase/auth'
+import {
+  AuthError,
+  AuthErrorCodes,
+  createUserWithEmailAndPassword
+} from 'firebase/auth'
 import { addDoc, collection } from 'firebase/firestore'
 import { useForm } from 'react-hook-form'
 import validator from 'validator'
@@ -32,7 +36,8 @@ const SignUp = () => {
     register,
     formState: { errors },
     handleSubmit,
-    watch
+    watch,
+    setError
   } = useForm<SignUpForm>()
 
   const passwordValue = watch('password')
@@ -51,7 +56,13 @@ const SignUp = () => {
         firstName: data.firstName,
         lastName: data.lastName
       })
-    } catch (error) {}
+    } catch (error) {
+      const _error = error as AuthError
+
+      if (_error.code === AuthErrorCodes.EMAIL_EXISTS) {
+        return setError('email', { type: 'alreadyInUse' })
+      }
+    }
   }
 
   return (
@@ -108,6 +119,9 @@ const SignUp = () => {
             {errors?.email?.type === 'validate' && (
               <ErrorMessage>Por favor,insira um email valido!</ErrorMessage>
             )}
+            {errors?.email?.type === 'alreadyInUse' && (
+              <ErrorMessage>Este email já está em uso</ErrorMessage>
+            )}
           </SignUpInputContainer>
 
           <SignUpInputContainer>
@@ -117,11 +131,17 @@ const SignUp = () => {
               hasError={!!errors?.password}
               type="password"
               {...register('password', {
-                required: true
+                required: true,
+                minLength: 6
               })}
             />
             {errors?.password?.type === 'required' && (
               <ErrorMessage>A senha é obrigatória.</ErrorMessage>
+            )}
+            {errors?.password?.type === 'minLength' && (
+              <ErrorMessage>
+                A senha deve ter no minimo 6 caracteres.
+              </ErrorMessage>
             )}
           </SignUpInputContainer>
 
