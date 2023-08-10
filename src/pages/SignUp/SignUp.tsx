@@ -1,27 +1,33 @@
+import { useContext, useEffect } from 'react'
+
+import validator from 'validator'
 import {
   AuthError,
   AuthErrorCodes,
   createUserWithEmailAndPassword
 } from 'firebase/auth'
-import { addDoc, collection } from 'firebase/firestore'
 import { useForm } from 'react-hook-form'
-import validator from 'validator'
 import { auth, db } from '../../config/firebase.config'
+import { addDoc, collection } from 'firebase/firestore'
 
 //components
 import { FiLogIn } from 'react-icons/fi'
-import CustomButtom from '../../Components/CustomButtom/CustomButtom'
-import CustomInput from '../../Components/CustomInput/CustomInput'
 import Header from '../../Components/Header/Header'
+import CustomInput from '../../Components/CustomInput/CustomInput'
+import CustomButtom from '../../Components/CustomButtom/CustomButtom'
+import ErrorMessage from '../../Components/CustomInput/Components/ErrorMessage'
+
+//utilities
+import { UserContext } from '../../contexts/user.context'
 
 //styles
-import ErrorMessage from '../../Components/CustomInput/Components/ErrorMessage'
 import {
   SignUpContainer,
   SignUpContent,
   SignUpHeadline,
   SignUpInputContainer
 } from './styles'
+import { useNavigate } from 'react-router-dom'
 
 interface SignUpForm {
   firstName: string
@@ -39,6 +45,16 @@ const SignUp = () => {
     watch,
     setError
   } = useForm<SignUpForm>()
+
+  const { isAuthenticated } = useContext(UserContext)
+
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/')
+    }
+  }, [isAuthenticated])
 
   const passwordValue = watch('password')
 
