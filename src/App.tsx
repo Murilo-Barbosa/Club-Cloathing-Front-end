@@ -1,4 +1,4 @@
-import { FunctionComponent, useContext } from 'react'
+import { FunctionComponent, useContext, useState } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
 //utilities
@@ -14,13 +14,15 @@ import SignUp from './pages/SignUp/SignUp'
 
 const App: FunctionComponent = () => {
   const { isAuthenticated, loginUser, logoutUser } = useContext(UserContext)
+  const [isInitializing, setIsInitializing] = useState(true)
 
   onAuthStateChanged(auth, async (user) => {
     const isSigningOut = isAuthenticated && !user
 
     if (isSigningOut) {
       if (logoutUser) {
-        return logoutUser()
+        logoutUser()
+        return setIsInitializing(false)
       }
     }
 
@@ -33,13 +35,15 @@ const App: FunctionComponent = () => {
 
         const userFromFirestore = querySnapshot.docs[0]?.data()
         if (loginUser) {
-          return loginUser(userFromFirestore as any)
+          loginUser(userFromFirestore as any)
+          return setIsInitializing(false)
         }
       }
     }
+    return setIsInitializing(false)
   })
 
-  console.log({ isAuthenticated })
+  if (isInitializing) return null
 
   return (
     <BrowserRouter>
