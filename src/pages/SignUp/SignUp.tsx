@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react'
+import { useContext, useEffect, useState } from 'react'
 
 import validator from 'validator'
 import {
@@ -28,6 +28,7 @@ import {
   SignUpInputContainer
 } from './styles'
 import { useNavigate } from 'react-router-dom'
+import Loading from '../../Components/loading'
 
 interface SignUpForm {
   firstName: string
@@ -47,6 +48,7 @@ const SignUp = () => {
   } = useForm<SignUpForm>()
 
   const { isAuthenticated } = useContext(UserContext)
+  const [isLoading, setIsLoading] = useState(false)
 
   const navigate = useNavigate()
 
@@ -60,6 +62,7 @@ const SignUp = () => {
 
   const handleSubmitPress = async (data: SignUpForm) => {
     try {
+      setIsLoading(true)
       const userCredentials = await createUserWithEmailAndPassword(
         auth,
         data.email,
@@ -79,12 +82,15 @@ const SignUp = () => {
       if (_error.code === AuthErrorCodes.EMAIL_EXISTS) {
         return setError('email', { type: 'alreadyInUse' })
       }
+    } finally {
+      setIsLoading(false)
     }
   }
 
   return (
     <>
       <Header />
+      {isLoading && <Loading />}
 
       <SignUpContainer>
         <SignUpContent>
