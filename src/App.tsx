@@ -12,6 +12,7 @@ import Home from './pages/home/Home'
 import Login from './pages/Login/Login'
 import SignUp from './pages/SignUp/SignUp'
 import { userConverter } from './converters/firestore.converters'
+import Loading from './Components/loading'
 
 const App: FunctionComponent = () => {
   const { isAuthenticated, loginUser, logoutUser } = useContext(UserContext)
@@ -47,7 +48,7 @@ const App: FunctionComponent = () => {
     return setIsInitializing(false)
   })
 
-  if (isInitializing) return null
+  if (isInitializing) return <Loading />
 
   return (
     <BrowserRouter>
