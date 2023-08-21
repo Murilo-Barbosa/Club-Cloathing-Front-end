@@ -6,12 +6,15 @@ import App from './App'
 import UserContextProvider from './contexts/user.context'
 
 import './index.css'
+import CategoryContextProvider from './contexts/category.context'
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
   <React.StrictMode>
     <UserContextProvider>
-      <App />
+      <CategoryContextProvider>
+        <App />
+      </CategoryContextProvider>
     </UserContextProvider>
   </React.StrictMode>
 )
