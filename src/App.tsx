@@ -15,6 +15,7 @@ import { userConverter } from './converters/firestore.converters'
 import Loading from './Components/loading'
 import ExplorePage from './pages/explore'
 import CategoryDetailsPage from './pages/CategoryDetailsPage'
+import Cart from './Components/Cart'
 
 const App: FunctionComponent = () => {
   const { isAuthenticated, loginUser, logoutUser } = useContext(UserContext)
@@ -61,6 +62,8 @@ const App: FunctionComponent = () => {
         <Route path="/category/:id" element={<CategoryDetailsPage />} />
         <Route path="/explore" element={<ExplorePage />} />
       </Routes>
+
+      <Cart />
     </BrowserRouter>
   )
 }

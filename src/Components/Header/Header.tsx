@@ -7,9 +7,11 @@ import { BsCart3 } from 'react-icons/bs'
 import { UserContext } from '../../contexts/user.context'
 import { signOut } from 'firebase/auth'
 import { auth } from '../../config/firebase.config'
+import { CartContext } from '../../contexts/cart.context'
 
 const Header = () => {
   const navigate = useNavigate()
+  const { toggleCart } = useContext(CartContext)
 
   const { isAuthenticated } = useContext(UserContext)
 
@@ -46,7 +48,7 @@ const Header = () => {
         {isAuthenticated && (
           <S.HeaderItem onClick={() => signOut(auth)}>SAIR</S.HeaderItem>
         )}
-        <S.HeaderItem>
+        <S.HeaderItem onClick={toggleCart}>
           <BsCart3 size={20} />
         </S.HeaderItem>
       </S.HeaderItems>
