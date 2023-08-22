@@ -6,9 +6,10 @@ import { BsCartCheck } from 'react-icons/bs'
 //components
 import CustomButtom from '../CustomButtom/CustomButtom'
 import { CartContext } from '../../contexts/cart.context'
+import CartItem from './components/CartItem'
 
 const Cart: React.FC = () => {
-  const { isVisible, toggleCart } = useContext(CartContext)
+  const { isVisible, toggleCart, products } = useContext(CartContext)
 
   return (
     <>
@@ -17,6 +18,9 @@ const Cart: React.FC = () => {
         <S.CartContent>
           <S.CartTitle>Seu Carrinho</S.CartTitle>
           {/* Produtos */}
+          {products.map((product) => (
+            <CartItem product={product} />
+          ))}
           <S.CartTotal>Total: R$500</S.CartTotal>
           <CustomButtom startIcon={<BsCartCheck />}>
             Ir para o Checkout
