@@ -22,7 +22,7 @@ const Header = () => {
   }
 
   const handleExplorerClick = () => {
-    navigate('/explorer')
+    navigate('/explore')
   }
 
   const handleHomeCLick = () => {
