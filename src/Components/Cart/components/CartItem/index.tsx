@@ -1,3 +1,5 @@
+import { useContext } from 'react'
+import { CartContext } from '../../../../contexts/cart.context'
 import CartProduct from '../../../../types/cart.types'
 
 import * as S from './styles'
@@ -8,6 +10,11 @@ interface CartItemProps {
 }
 
 const CartItem: React.FC<CartItemProps> = ({ product }) => {
+  const { removeProductFromCart } = useContext(CartContext)
+  const handleRemoveClick = () => {
+    removeProductFromCart(product.id)
+  }
+
   return (
     <>
       <S.CartItemContainer>
@@ -23,7 +30,7 @@ const CartItem: React.FC<CartItemProps> = ({ product }) => {
             <AiOutlinePlus size={20} />
           </S.CartItemQuantity>
         </S.CartItemInfo>
-        <S.RemoveButton>
+        <S.RemoveButton onClick={handleRemoveClick}>
           <AiOutlineClose size={25} />
         </S.RemoveButton>
       </S.CartItemContainer>
