@@ -2,9 +2,10 @@ import React, { useContext, useEffect } from 'react'
 import { Container } from './styles'
 import { CategoryContext } from '../../../../contexts/category.context'
 import CategoryOverview from '../CategoryOverview'
+import Loading from '../../../../Components/loading'
 
 const CategoriesOverview: React.FC = () => {
-  const { categories, fetchCategories } = useContext(CategoryContext)
+  const { categories, fetchCategories, isLoading } = useContext(CategoryContext)
 
   useEffect(() => {
     if (categories.length === 0) {
@@ -12,6 +13,7 @@ const CategoriesOverview: React.FC = () => {
     }
   }, [])
 
+  if (isLoading) return <Loading />
   return (
     <>
       <Container>
