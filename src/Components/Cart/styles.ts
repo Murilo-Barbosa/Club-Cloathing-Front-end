@@ -22,6 +22,7 @@ export const CartContainer = styled.div<CartContainerProps>`
 
   p {
     color: ${Colors.text.dark};
+    font-weight: 700;
   }
 `
 
