@@ -42,15 +42,16 @@ const CartContextProvider: FunctionComponent<CartContextProps> = ({
   const [products, setProducts] = useState<CartProduct[]>([])
 
   useEffect(() => {
-    const productsFromLocalStorage = JSON.parse(
-      localStorage.getItem('cartProducts')!
-    )
-    console.log(productsFromLocalStorage)
-    setProducts(productsFromLocalStorage)
+    const productsFromLocalStorage = localStorage.getItem('cartProducts')
+    if (productsFromLocalStorage) {
+      setProducts(JSON.parse(productsFromLocalStorage))
+    }
   }, [])
 
   useEffect(() => {
-    localStorage.setItem('cartProducts', JSON.stringify(products))
+    setTimeout(() => {
+      localStorage.setItem('cartProducts', JSON.stringify(products))
+    }, 0)
   }, [products])
 
   const productsTotalPrice = useMemo(() => {
