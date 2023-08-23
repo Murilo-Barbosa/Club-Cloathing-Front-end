@@ -1,38 +1,96 @@
-import { useForm } from 'react-hook-form'
+import { useContext, useEffect, useState } from 'react'
+
 import validator from 'validator'
+import {
+  AuthError,
+  AuthErrorCodes,
+  createUserWithEmailAndPassword
+} from 'firebase/auth'
+import { useForm } from 'react-hook-form'
+import { auth, db } from '../../config/firebase.config'
+import { addDoc, collection } from 'firebase/firestore'
 
 //components
 import { FiLogIn } from 'react-icons/fi'
-import CustomButtom from '../../Components/CustomButtom/CustomButtom'
-import CustomInput from '../../Components/CustomInput/CustomInput'
 import Header from '../../Components/Header/Header'
+import CustomInput from '../../Components/CustomInput/CustomInput'
+import CustomButtom from '../../Components/CustomButtom/CustomButtom'
+import ErrorMessage from '../../Components/CustomInput/Components/ErrorMessage'
+
+//utilities
+import { UserContext } from '../../contexts/user.context'
 
 //styles
-import ErrorMessage from '../../Components/CustomInput/Components/ErrorMessage'
 import {
   SignUpContainer,
   SignUpContent,
   SignUpHeadline,
   SignUpInputContainer
 } from './styles'
+import { useNavigate } from 'react-router-dom'
+import Loading from '../../Components/loading'
+
+interface SignUpForm {
+  firstName: string
+  lastName: string
+  email: string
+  password: string
+  passwordConfirm: string
+}
 
 const SignUp = () => {
   const {
     register,
     formState: { errors },
     handleSubmit,
-    watch
-  } = useForm()
+    watch,
+    setError
+  } = useForm<SignUpForm>()
 
-  const handleSubmitPress = (data: any) => {
-    console.log({ data })
-  }
+  const { isAuthenticated } = useContext(UserContext)
+  const [isLoading, setIsLoading] = useState(false)
+
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/')
+    }
+  }, [isAuthenticated])
 
   const passwordValue = watch('password')
+
+  const handleSubmitPress = async (data: SignUpForm) => {
+    try {
+      setIsLoading(true)
+      const userCredentials = await createUserWithEmailAndPassword(
+        auth,
+        data.email,
+        data.password
+      )
+
+      await addDoc(collection(db, 'users'), {
+        id: userCredentials.user.uid,
+        email: userCredentials.user.email,
+        firstName: data.firstName,
+        lastName: data.lastName,
+        provider: 'firebase'
+      })
+    } catch (error) {
+      const _error = error as AuthError
+
+      if (_error.code === AuthErrorCodes.EMAIL_EXISTS) {
+        return setError('email', { type: 'alreadyInUse' })
+      }
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
   return (
     <>
       <Header />
+      {isLoading && <Loading />}
 
       <SignUpContainer>
         <SignUpContent>
@@ -42,12 +100,12 @@ const SignUp = () => {
             <p>Nome</p>
             <CustomInput
               placeholder="Digite seu nome"
-              hasError={!!errors?.name}
-              {...register('name', {
+              hasError={!!errors?.firstName}
+              {...register('firstName', {
                 required: true
               })}
             />
-            {errors?.name?.type === 'required' && (
+            {errors?.firstName?.type === 'required' && (
               <ErrorMessage>O nome é obrigatório!</ErrorMessage>
             )}
           </SignUpInputContainer>
@@ -56,12 +114,12 @@ const SignUp = () => {
             <p>Sobrenome</p>
             <CustomInput
               placeholder="Digite seu sobrenome"
-              hasError={!!errors?.surname}
-              {...register('surname', {
+              hasError={!!errors?.lastName}
+              {...register('lastName', {
                 required: true
               })}
             />
-            {errors?.surname?.type === 'required' && (
+            {errors?.lastName?.type === 'required' && (
               <ErrorMessage>O sobrenome é obrigatório!</ErrorMessage>
             )}
           </SignUpInputContainer>
@@ -84,6 +142,9 @@ const SignUp = () => {
             {errors?.email?.type === 'validate' && (
               <ErrorMessage>Por favor,insira um email valido!</ErrorMessage>
             )}
+            {errors?.email?.type === 'alreadyInUse' && (
+              <ErrorMessage>Este email já está em uso</ErrorMessage>
+            )}
           </SignUpInputContainer>
 
           <SignUpInputContainer>
@@ -93,11 +154,17 @@ const SignUp = () => {
               hasError={!!errors?.password}
               type="password"
               {...register('password', {
-                required: true
+                required: true,
+                minLength: 6
               })}
             />
             {errors?.password?.type === 'required' && (
               <ErrorMessage>A senha é obrigatória.</ErrorMessage>
+            )}
+            {errors?.password?.type === 'minLength' && (
+              <ErrorMessage>
+                A senha deve ter no minimo 6 caracteres.
+              </ErrorMessage>
             )}
           </SignUpInputContainer>
 

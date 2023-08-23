@@ -12,8 +12,8 @@ export const categoriesContent = styled.div`
   width: 1920px;
   display: grid;
   grid-template-areas:
-    'a c'
-    'b b'
+    'a b'
+    'c c'
     'd e';
   grid-gap: 15px;
   padding: 30px;
