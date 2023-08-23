@@ -11,7 +11,7 @@ import { CartContext } from '../../contexts/cart.context'
 
 const Header = () => {
   const navigate = useNavigate()
-  const { toggleCart } = useContext(CartContext)
+  const { toggleCart, productsCount } = useContext(CartContext)
 
   const { isAuthenticated } = useContext(UserContext)
 
@@ -50,6 +50,7 @@ const Header = () => {
         )}
         <S.HeaderItem onClick={toggleCart}>
           <BsCart3 size={20} />
+          {productsCount}
         </S.HeaderItem>
       </S.HeaderItems>
     </S.Container>
