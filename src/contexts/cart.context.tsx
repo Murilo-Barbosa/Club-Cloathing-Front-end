@@ -7,6 +7,7 @@ import {
 } from 'react'
 import CartProduct from '../types/cart.types'
 import Product from '../types/product.types'
+import { useNavigate } from 'react-router-dom'
 
 interface ICartContext {
   isVisible: boolean
