@@ -7,9 +7,13 @@ export const CategoryTitle = styled.div`
   display: flex;
   align-items: center;
   margin-top: 20px;
+
   p {
     font-size: 21px;
     font-weight: 700;
+  }
+
+  @media (max-width: 1248px) {
   }
 `
 export const ProductsContainer = styled.div`
@@ -18,6 +22,11 @@ export const ProductsContainer = styled.div`
   justify-items: start;
   margin-top: 5px;
   grid-row-gap: 20px;
+
+  @media (max-width: 1248px) {
+    display: flex;
+    flex-direction: column;
+  }
 `
 export const IconContainer = styled.div`
   display: flex;

@@ -62,7 +62,6 @@ const CategoryDetails: React.FC<ICategoryDetailsProps> = ({ categoryId }) => {
             <ProductItem key={product.id} product={product} />
           ))}
         </S.ProductsContainer>
-        z
       </S.Container>
     </>
   )
