@@ -4,6 +4,7 @@ import CartProduct from '../../../../types/cart.types'
 
 import * as S from './styles'
 import { AiOutlinePlus, AiOutlineMinus, AiOutlineClose } from 'react-icons/ai'
+import { useNavigate } from 'react-router-dom'
 
 interface CartItemProps {
   product: CartProduct

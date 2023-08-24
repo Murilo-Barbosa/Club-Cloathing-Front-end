@@ -13,6 +13,7 @@ interface ICartContext {
   products: CartProduct[]
   productsTotalPrice: number
   productsCount: number
+  clearProducts: () => void
   toggleCart: () => void
   addProductToCart: (product: Product) => void
   removeProductFromCart: (ProductId: string) => void
@@ -29,6 +30,7 @@ export const CartContext = createContext<ICartContext>({
   productsTotalPrice: 0,
   productsCount: 0,
   toggleCart: () => {},
+  clearProducts: () => {},
   addProductToCart: () => {},
   removeProductFromCart: () => {},
   increaseProductQuantity: () => {},
@@ -42,15 +44,16 @@ const CartContextProvider: FunctionComponent<CartContextProps> = ({
   const [products, setProducts] = useState<CartProduct[]>([])
 
   useEffect(() => {
-    const productsFromLocalStorage = JSON.parse(
-      localStorage.getItem('cartProducts')!
-    )
-    console.log(productsFromLocalStorage)
-    setProducts(productsFromLocalStorage)
+    const productsFromLocalStorage = localStorage.getItem('cartProducts')
+    if (productsFromLocalStorage) {
+      setProducts(JSON.parse(productsFromLocalStorage))
+    }
   }, [])
 
   useEffect(() => {
-    localStorage.setItem('cartProducts', JSON.stringify(products))
+    setTimeout(() => {
+      localStorage.setItem('cartProducts', JSON.stringify(products))
+    }, 0)
   }, [products])
 
   const productsTotalPrice = useMemo(() => {
@@ -114,6 +117,9 @@ const CartContextProvider: FunctionComponent<CartContextProps> = ({
     )
   }
 
+  const clearProducts = () => {
+    setProducts([])
+  }
   return (
     <CartContext.Provider
       value={{
@@ -122,6 +128,7 @@ const CartContextProvider: FunctionComponent<CartContextProps> = ({
         productsCount,
         productsTotalPrice,
         toggleCart,
+        clearProducts,
         addProductToCart,
         removeProductFromCart,
         increaseProductQuantity,
