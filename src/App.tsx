@@ -18,6 +18,7 @@ import CategoryDetailsPage from './pages/CategoryDetailsPage'
 import Cart from './Components/Cart'
 import CheckoutPage from './pages/CheckoutPage'
 import AuthenticationGuard from './guards/authentication.guard'
+import PaymentConfirmationPage from './pages/PaymentConfirmationPage'
 
 const App: FunctionComponent = () => {
   const { isAuthenticated, loginUser, logoutUser } = useContext(UserContext)
@@ -71,6 +72,10 @@ const App: FunctionComponent = () => {
           }
         />
         <Route path="/category/:id" element={<CategoryDetailsPage />} />
+        <Route
+          path="/payment-confirmation"
+          element={<PaymentConfirmationPage />}
+        />
       </Routes>
 
       <Cart />

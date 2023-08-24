@@ -7,13 +7,13 @@ import {
 } from 'react'
 import CartProduct from '../types/cart.types'
 import Product from '../types/product.types'
-import { useNavigate } from 'react-router-dom'
 
 interface ICartContext {
   isVisible: boolean
   products: CartProduct[]
   productsTotalPrice: number
   productsCount: number
+  clearProducts: () => void
   toggleCart: () => void
   addProductToCart: (product: Product) => void
   removeProductFromCart: (ProductId: string) => void
@@ -30,6 +30,7 @@ export const CartContext = createContext<ICartContext>({
   productsTotalPrice: 0,
   productsCount: 0,
   toggleCart: () => {},
+  clearProducts: () => {},
   addProductToCart: () => {},
   removeProductFromCart: () => {},
   increaseProductQuantity: () => {},
@@ -116,6 +117,9 @@ const CartContextProvider: FunctionComponent<CartContextProps> = ({
     )
   }
 
+  const clearProducts = () => {
+    setProducts([])
+  }
   return (
     <CartContext.Provider
       value={{
@@ -124,6 +128,7 @@ const CartContextProvider: FunctionComponent<CartContextProps> = ({
         productsCount,
         productsTotalPrice,
         toggleCart,
+        clearProducts,
         addProductToCart,
         removeProductFromCart,
         increaseProductQuantity,
