@@ -3,6 +3,9 @@
 
 Bem-vindo ao meu primeiro E-commerce desenvolvido em React. Este projeto não é apenas mais um projeto de E-commerce visual, mas sim um projeto funcional usando React, TypeScript, Firebase, Context API, React Hook Form e integração perfeita com a API do Stripe para uma experiência de compra online completa. 
 
+![image](https://github.com/Murilo-Barbosa/e-commerce-front-end/assets/86027245/dbc6d16d-1d9c-4aee-b2c2-610d437e0410)
+
+
 ## Principais Recursos:
 
 `Navegação Simplificada:` Explore uma variedade de produtos organizados de forma elegante em categorias, proporcionando uma experiência de compra amigável e intuitiva.
@@ -34,7 +37,5 @@ Bem-vindo ao meu primeiro E-commerce desenvolvido em React. Este projeto não é
 Deploy: https://e-commerce-front-end-opal.vercel.app/
 
 Cartão teste fornecido pelo stripe: 4242 4242 4242 4242 / validade: 05/28 / cvv: 000
-
-Aproveite a jornada de compras online aprimorada com nosso E-commerce Funcional em React! Se tiver alguma dúvida ou precisar de ajuda, não hesite em entrar em contato conosco.
 
 Vamos às Compras! 🛍️🚀
